@@ -10,18 +10,12 @@ import {MatListModule} from '@angular/material/list';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {HttpClientModule} from '@angular/common/http';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {RouterModule, Routes} from '@angular/router';
-import {AuthModule} from './auth/auth.module';
 import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import {environment} from '../environments/environment';
-import {RouterState, StoreRouterConnectingModule} from '@ngrx/router-store';
 
-import {EffectsModule} from '@ngrx/effects';
-import {EntityDataModule} from '@ngrx/data';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
+import {AuthModule} from './auth/auth.module';
 
 const routes: Routes = [
   {
