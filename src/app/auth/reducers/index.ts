@@ -1,7 +1,20 @@
-import {ActionReducerMap} from '@ngrx/store';
+import {createReducer, on} from '@ngrx/store';
+
+import {User} from "../model/user.model";
+import {AuthActions} from "../action-types";
 
 export const authFeatureKey = 'auth';
 
-export interface State {}
+export interface AuthState {
+  user: User,
+}
 
-export const reducers: ActionReducerMap<State> = {};
+const initState: AuthState = {
+  user: undefined,
+};
+
+export const authReducer = createReducer(
+  initState,
+  on(AuthActions.login, (state, {user}) => ({user})),
+  on(AuthActions.logout, () => ({user: undefined})),
+);
