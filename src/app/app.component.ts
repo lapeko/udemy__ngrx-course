@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
+      this.store.dispatch(AuthActions.init());
 
       this.router.events.subscribe(event  => {
         switch (true) {

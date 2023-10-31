@@ -16,6 +16,7 @@ import {AuthModule} from './auth/auth.module';
 import {AppComponent} from './app.component';
 import {reducers} from "./reducers";
 import {authGuard} from "./auth/auth.guard";
+import {EffectsModule} from "@ngrx/effects";
 
 const routes: Routes = [
   {
@@ -46,7 +47,8 @@ const routes: Routes = [
     MatToolbarModule,
     AuthModule.forRoot(),
     StoreModule.forRoot(reducers, {}),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
+    EffectsModule.forRoot(),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
   ],
   bootstrap: [AppComponent]
 })
