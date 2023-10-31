@@ -11,13 +11,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {RouterModule, Routes} from '@angular/router';
 import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {EffectsModule} from "@ngrx/effects";
+import {StoreRouterConnectingModule} from "@ngrx/router-store";
 
 import {AuthModule} from './auth/auth.module';
 import {AppComponent} from './app.component';
-import {reducers} from "./reducers";
+import {metaReducers, reducers} from "./reducers";
 import {authGuard} from "./auth/auth.guard";
-import {EffectsModule} from "@ngrx/effects";
-import {StoreRouterConnectingModule} from "@ngrx/router-store";
 
 const routes: Routes = [
   {
@@ -47,7 +47,15 @@ const routes: Routes = [
     MatListModule,
     MatToolbarModule,
     AuthModule.forRoot(),
-    StoreModule.forRoot(reducers, {}),
+    StoreModule.forRoot(reducers, {
+      metaReducers,
+      runtimeChecks: {
+        strictActionImmutability: true,
+        strictStateImmutability: true,
+        // strictActionSerializability: true,
+        // strictStateSerializability: true,
+      }
+    }),
     EffectsModule.forRoot(),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     StoreRouterConnectingModule.forRoot(),
