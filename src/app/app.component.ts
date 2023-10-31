@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {select, Store} from "@ngrx/store";
-import {Observable} from "rxjs";
-import {map} from 'rxjs/operators';
+import {Store} from "@ngrx/store";
 import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from '@angular/router';
+
+import {AppState} from "./reducers";
+import {isLoggedIn, isLoggedOut} from "./auth/auth.selectors";
 
 @Component({
   selector: 'app-root',
@@ -12,9 +13,13 @@ import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Route
 export class AppComponent implements OnInit {
 
     loading = true;
+    isLoggedIn$ = this.store.select(isLoggedIn);
+    isLoggedOut$ = this.store.select(isLoggedOut);
 
-    constructor(private router: Router) {
-
+    constructor(
+      private router: Router,
+      private store: Store<AppState>,
+    ) {
     }
 
     ngOnInit() {
