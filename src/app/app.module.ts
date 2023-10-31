@@ -17,6 +17,7 @@ import {AppComponent} from './app.component';
 import {reducers} from "./reducers";
 import {authGuard} from "./auth/auth.guard";
 import {EffectsModule} from "@ngrx/effects";
+import {StoreRouterConnectingModule} from "@ngrx/router-store";
 
 const routes: Routes = [
   {
@@ -49,6 +50,7 @@ const routes: Routes = [
     StoreModule.forRoot(reducers, {}),
     EffectsModule.forRoot(),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+    StoreRouterConnectingModule.forRoot(),
   ],
   bootstrap: [AppComponent]
 })
