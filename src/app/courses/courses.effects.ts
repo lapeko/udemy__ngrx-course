@@ -1,8 +1,9 @@
 import {Actions, createEffect, ofType} from "@ngrx/effects";
-import {CoursesActions} from "./action-types";
-import {map, switchMap} from "rxjs/operators";
-import {CoursesHttpService} from "./services/courses-http.service";
+import {concatMap, map, switchMap} from "rxjs/operators";
 import {Injectable} from "@angular/core";
+
+import {CoursesActions} from "./action-types";
+import {CoursesHttpService} from "./services/courses-http.service";
 
 @Injectable()
 export class CoursesEffects {
@@ -12,7 +13,14 @@ export class CoursesEffects {
       switchMap(() => this.coursesService.findAllCourses()),
       map(courses => CoursesActions.allCoursesLoaded({courses})),
     );
-  }, {functional: true});
+  });
+
+  courseUpdated = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(CoursesActions.courseUpdated),
+      concatMap(({update}) => this.coursesService.saveCourse(update.id, update.changes)),
+    )
+  }, {dispatch: false});
 
   constructor(
     private actions$: Actions,
