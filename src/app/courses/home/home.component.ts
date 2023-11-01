@@ -1,70 +1,32 @@
-import {Component, OnInit} from '@angular/core';
-import {compareCourses, Course} from '../model/course';
+import {Component} from '@angular/core';
 import {Observable} from "rxjs";
+import {MatDialog} from '@angular/material/dialog';
+import {Store} from "@ngrx/store";
+
+import {Course} from '../model/course';
 import {defaultDialogConfig} from '../shared/default-dialog-config';
 import {EditCourseDialogComponent} from '../edit-course-dialog/edit-course-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import {map, shareReplay} from 'rxjs/operators';
-import {CoursesHttpService} from '../services/courses-http.service';
-
-
+import {AppState} from "../../reducers";
+import {advancedCourses, beginnerCourses, coursesLoaded, promoTotal} from "../courses.selectors";
 
 @Component({
     selector: 'home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
-
-    promoTotal$: Observable<number>;
-
-    loading$: Observable<boolean>;
-
-    beginnerCourses$: Observable<Course[]>;
-
-    advancedCourses$: Observable<Course[]>;
-
+export class HomeComponent {
+    promoTotal$ = this.store.select(promoTotal);
+    loading$: Observable<boolean> = this.store.select(coursesLoaded);
+    beginnerCourses$: Observable<Course[]> = this.store.select(beginnerCourses);
+    advancedCourses$: Observable<Course[]> = this.store.select(advancedCourses);
 
     constructor(
       private dialog: MatDialog,
-      private coursesHttpService: CoursesHttpService) {
-
+      private store: Store<AppState>,
+    ) {
     }
-
-    ngOnInit() {
-      this.reload();
-    }
-
-  reload() {
-
-    const courses$ = this.coursesHttpService.findAllCourses()
-      .pipe(
-        map(courses => courses.sort(compareCourses)),
-        shareReplay()
-      );
-
-    this.loading$ = courses$.pipe(map(courses => !!courses));
-
-    this.beginnerCourses$ = courses$
-      .pipe(
-        map(courses => courses.filter(course => course.category == 'BEGINNER'))
-      );
-
-
-    this.advancedCourses$ = courses$
-      .pipe(
-        map(courses => courses.filter(course => course.category == 'ADVANCED'))
-      );
-
-    this.promoTotal$ = courses$
-        .pipe(
-            map(courses => courses.filter(course => course.promo).length)
-        );
-
-  }
 
   onAddCourse() {
-
     const dialogConfig = defaultDialogConfig();
 
     dialogConfig.data = {
@@ -73,8 +35,5 @@ export class HomeComponent implements OnInit {
     };
 
     this.dialog.open(EditCourseDialogComponent, dialogConfig);
-
   }
-
-
 }

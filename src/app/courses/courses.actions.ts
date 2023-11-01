@@ -1,9 +1,11 @@
-import {createAction} from "@ngrx/store";
+import {createAction, props} from "@ngrx/store";
+import {Course} from "./model/course";
 
 export const loadAllCourses = createAction(
   "[COURSES] load all courses"
 );
 
 export const allCoursesLoaded = createAction(
-  "[COURSES] all courses loaded"
+  "[COURSES] all courses loaded",
+  props<{courses: Course[]}>(),
 );

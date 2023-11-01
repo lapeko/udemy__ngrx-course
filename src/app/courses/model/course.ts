@@ -7,7 +7,7 @@ export interface Course {
   courseListIcon: string;
   description: string;
   longDescription?: string;
-  category: string;
+  category: "BEGINNER" | "ADVANCED";
   lessonsCount: number;
   promo: boolean;
 }

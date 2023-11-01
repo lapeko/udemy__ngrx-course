@@ -4,7 +4,6 @@ export const USERS = {
     email: 'test@angular-university.io',
     password: 'test'
   }
-
 };
 
 
@@ -142,7 +141,6 @@ export const COURSES: any = {
     seqNo: 12,
     url: 'angular-material-course'
   }
-
 };
 
 
