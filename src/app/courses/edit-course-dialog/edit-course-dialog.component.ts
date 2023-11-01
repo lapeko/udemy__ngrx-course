@@ -26,8 +26,8 @@ export class EditCourseDialogComponent {
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<EditCourseDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data,
-    private coursesService: CoursesHttpService) {
-
+    private coursesService: CoursesHttpService
+  ) {
     this.dialogTitle = data.dialogTitle;
     this.course = data.course;
     this.mode = data.mode;
@@ -67,9 +67,5 @@ export class EditCourseDialogComponent {
       .subscribe(
         () => this.dialogRef.close()
       )
-
-
   }
-
-
 }
