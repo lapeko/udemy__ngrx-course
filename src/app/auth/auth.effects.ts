@@ -25,7 +25,10 @@ export class AuthEffects {
 
   login = createEffect(() => this.actions$.pipe(
     ofType(AuthActions.login),
-    tap(({user}) => localStorage.setItem('user', JSON.stringify(user))),
+    tap(({user}) => {
+      localStorage.setItem('user', JSON.stringify(user));
+      this.router.navigateByUrl("/courses")
+    }),
   ), {functional: true, dispatch: false});
 
   logout = createEffect(() => this.actions$.pipe(
