@@ -8,26 +8,13 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {HttpClientModule} from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {RouterModule, Routes} from '@angular/router';
 import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
 import {AppComponent} from './app.component';
 import {AuthModule} from './auth/auth.module';
 import {EffectsModule} from "@ngrx/effects";
-import {authGuard} from "./auth/auth.guard";
-
-const routes: Routes = [
-  {
-    path: 'courses',
-    canActivate: [authGuard],
-    loadChildren: () => import('./courses/courses.module').then(m => m.CoursesModule)
-  },
-  {
-    path: '**',
-    redirectTo: '/'
-  }
-];
+import {AppRoutingModule} from "./app-routing.module";
 
 @NgModule({
   declarations: [
@@ -36,8 +23,8 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    RouterModule.forRoot(routes),
     HttpClientModule,
+    AppRoutingModule,
     MatMenuModule,
     MatIconModule,
     MatSidenavModule,

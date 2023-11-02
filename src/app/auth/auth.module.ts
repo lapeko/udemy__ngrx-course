@@ -2,7 +2,6 @@ import {ModuleWithProviders, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {MatCardModule} from "@angular/material/card";
 import {MatInputModule} from "@angular/material/input";
-import {RouterModule} from "@angular/router";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {StoreModule} from '@ngrx/store';
@@ -13,6 +12,7 @@ import {AuthService} from "./auth.service";
 import * as fromAuth from "./store/auth.reducer";
 import {AuthEffects} from "./store/auth.effects";
 import {authStateKey} from "./store/auth.actions";
+import {AuthRoutingModule} from "./auth-routing.module";
 
 @NgModule({
   imports: [
@@ -21,7 +21,7 @@ import {authStateKey} from "./store/auth.actions";
     MatCardModule,
     MatInputModule,
     MatButtonModule,
-    RouterModule.forChild([{path: 'login', component: LoginComponent}]),
+    AuthRoutingModule,
     StoreModule.forFeature(authStateKey, fromAuth.authReducer),
     EffectsModule.forFeature([AuthEffects]),
   ],
