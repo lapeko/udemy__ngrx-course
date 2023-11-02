@@ -14,6 +14,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
 import {AppComponent} from './app.component';
 import {AuthModule} from './auth/auth.module';
+import {EffectsModule} from "@ngrx/effects";
 
 const routes: Routes = [
   {
@@ -42,8 +43,9 @@ const routes: Routes = [
     MatListModule,
     MatToolbarModule,
     AuthModule.forRoot(),
-    StoreModule.forRoot({}, {}),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
+    StoreModule.forRoot({}),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+    EffectsModule.forRoot(),
   ],
   bootstrap: [AppComponent]
 })
