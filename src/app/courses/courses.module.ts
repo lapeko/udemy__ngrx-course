@@ -15,6 +15,7 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
+import {EntityDataService, EntityDefinitionService} from "@ngrx/data";
 
 import {HomeComponent} from './home/home.component';
 import {CoursesCardListComponent} from './courses-card-list/courses-card-list.component';
@@ -22,6 +23,9 @@ import {EditCourseDialogComponent} from './edit-course-dialog/edit-course-dialog
 import {CoursesHttpService} from './services/courses-http.service';
 import {CourseComponent} from './course/course.component';
 import {CoursesRoutingModule} from "./courses-routing.module";
+import {coursesEntityMetadataMap} from "./store/course-metadata";
+import {CoursesService} from "./store/courses.service";
+import {CoursesDataService} from "./store/courses-data.service";
 
 @NgModule({
   imports: [
@@ -57,9 +61,17 @@ import {CoursesRoutingModule} from "./courses-routing.module";
   ],
   providers: [
     CoursesHttpService,
+    CoursesService,
+    CoursesDataService,
   ]
 })
 export class CoursesModule {
-  constructor() {
+  constructor(
+    eds: EntityDefinitionService,
+    entityDataService: EntityDataService,
+    coursesDataService: CoursesDataService,
+  ) {
+    eds.registerMetadataMap(coursesEntityMetadataMap);
+    entityDataService.registerService("Course", coursesDataService);
   }
 }

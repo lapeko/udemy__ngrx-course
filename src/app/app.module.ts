@@ -15,6 +15,7 @@ import {AppComponent} from './app.component';
 import {AuthModule} from './auth/auth.module';
 import {EffectsModule} from "@ngrx/effects";
 import {AppRoutingModule} from "./app-routing.module";
+import {EntityDataModule} from "@ngrx/data";
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import {AppRoutingModule} from "./app-routing.module";
     StoreModule.forRoot({}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     EffectsModule.forRoot(),
+    EntityDataModule.forRoot({}),
   ],
   bootstrap: [AppComponent]
 })
