@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NavigationStart, Router} from '@angular/router';
 import {Store} from "@ngrx/store";
 import {map} from "rxjs/operators";
-import {Observable, of} from "rxjs";
+import {Observable} from "rxjs";
 
 import {AuthActions} from "./auth/store/auth.actions";
 import {loggedIn, loggedOut} from "./auth/store/auth.selectors";
@@ -13,9 +13,9 @@ import {loggedIn, loggedOut} from "./auth/store/auth.selectors";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-    loading$: Observable<boolean> = of(true);
-    loggedIn$: Observable<boolean> = of(false);
-    loggedOut$: Observable<boolean> = of(true);
+    loading$: Observable<boolean> = this.router.events.pipe(map(event  => event instanceof NavigationStart));
+    loggedIn$: Observable<boolean> = this.store.select(loggedIn);
+    loggedOut$: Observable<boolean> = this.store.select(loggedOut);
 
     constructor(
       private router: Router,
@@ -25,9 +25,6 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
       this.store.dispatch(AuthActions.initLogin());
-      this.loading$ = this.router.events.pipe(map(event  => event instanceof NavigationStart));
-      this.loggedIn$ = this.store.select(loggedIn);
-      this.loggedOut$ = this.store.select(loggedOut);
     }
 
     logout() {
