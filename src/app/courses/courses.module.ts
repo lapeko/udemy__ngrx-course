@@ -1,10 +1,5 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {HomeComponent} from './home/home.component';
-import {CoursesCardListComponent} from './courses-card-list/courses-card-list.component';
-import {EditCourseDialogComponent} from './edit-course-dialog/edit-course-dialog.component';
-import {CoursesHttpService} from './services/courses-http.service';
-import {CourseComponent} from './course/course.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatInputModule} from '@angular/material/input';
@@ -21,11 +16,12 @@ import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {RouterModule, Routes} from '@angular/router';
-import { EntityDataService, EntityDefinitionService, EntityMetadataMap} from '@ngrx/data';
-import {compareCourses, Course} from './model/course';
 
-import {compareLessons, Lesson} from './model/lesson';
-
+import {HomeComponent} from './home/home.component';
+import {CoursesCardListComponent} from './courses-card-list/courses-card-list.component';
+import {EditCourseDialogComponent} from './edit-course-dialog/edit-course-dialog.component';
+import {CoursesHttpService} from './services/courses-http.service';
+import {CourseComponent} from './course/course.component';
 
 export const coursesRoutes: Routes = [
   {
@@ -38,7 +34,6 @@ export const coursesRoutes: Routes = [
     component: CourseComponent
   }
 ];
-
 
 @NgModule({
   imports: [
@@ -58,29 +53,25 @@ export const coursesRoutes: Routes = [
     MatDatepickerModule,
     MatMomentDateModule,
     ReactiveFormsModule,
-    RouterModule.forChild(coursesRoutes)
+    RouterModule.forChild(coursesRoutes),
   ],
   declarations: [
     HomeComponent,
     CoursesCardListComponent,
     EditCourseDialogComponent,
-    CourseComponent
+    CourseComponent,
   ],
   exports: [
     HomeComponent,
     CoursesCardListComponent,
     EditCourseDialogComponent,
-    CourseComponent
+    CourseComponent,
   ],
   providers: [
-    CoursesHttpService
+    CoursesHttpService,
   ]
 })
 export class CoursesModule {
-
   constructor() {
-
   }
-
-
 }

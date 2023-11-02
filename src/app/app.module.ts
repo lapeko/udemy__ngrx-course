@@ -1,11 +1,8 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule, isDevMode} from '@angular/core';
-
-import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatIconModule} from '@angular/material/icon';
-
 import {MatListModule} from '@angular/material/list';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -15,6 +12,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
+import {AppComponent} from './app.component';
 import {AuthModule} from './auth/auth.module';
 
 const routes: Routes = [
