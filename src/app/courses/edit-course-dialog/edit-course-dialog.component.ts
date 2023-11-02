@@ -1,8 +1,9 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {Course} from '../model/course';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
+
+import {Course} from '../model/course';
 import {CoursesHttpService} from '../services/courses-http.service';
 
 @Component({
@@ -11,15 +12,10 @@ import {CoursesHttpService} from '../services/courses-http.service';
   styleUrls: ['./edit-course-dialog.component.css']
 })
 export class EditCourseDialogComponent {
-
   form: FormGroup;
-
   dialogTitle: string;
-
   course: Course;
-
   mode: 'create' | 'update';
-
   loading$:Observable<boolean>;
 
   constructor(
@@ -57,7 +53,6 @@ export class EditCourseDialogComponent {
   }
 
   onSave() {
-
     const course: Course = {
       ...this.course,
       ...this.form.value
@@ -67,9 +62,5 @@ export class EditCourseDialogComponent {
       .subscribe(
         () => this.dialogRef.close()
       )
-
-
   }
-
-
 }
