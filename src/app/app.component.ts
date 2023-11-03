@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {Store} from "@ngrx/store";
 import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from '@angular/router';
+import {Store} from "@ngrx/store";
+import {scan, startWith} from "rxjs/operators";
+import {Observable} from "rxjs";
 
-import {AppState} from "./reducers";
-import {isLoggedIn, isLoggedOut} from "./auth/auth.selectors";
-import {AuthActions} from "./auth/action-types";
+import {AuthActions} from "./auth/store/auth.actions";
+import {loggedIn, loggedOut} from "./auth/store/auth.selectors";
 
 @Component({
   selector: 'app-root',
@@ -12,27 +13,36 @@ import {AuthActions} from "./auth/action-types";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  loggedIn$: Observable<boolean> = this.store.select(loggedIn);
+  loggedOut$: Observable<boolean> = this.store.select(loggedOut);
+  loading$: Observable<boolean>;
 
-    loading = true;
-    isLoggedIn$ = this.store.select(isLoggedIn);
-    isLoggedOut$ = this.store.select(isLoggedOut);
+  constructor(
+    private router: Router,
+    private store: Store,
+  ) {
+  }
 
-    constructor(
-      private router: Router,
-      private store: Store<AppState>,
-    ) {
-    }
+  ngOnInit() {
+    this.store.dispatch(AuthActions.initLogin());
+    this.loading$ = this.router.events.pipe(
+      startWith(new NavigationStart(0, this.router.url)),
+      scan((isLoading, event) => {
+        switch (true) {
+          case event instanceof NavigationStart:
+            return true;
+          case event instanceof NavigationEnd:
+          case event instanceof NavigationCancel:
+          case event instanceof NavigationError:
+            return false;
+          default:
+            return isLoading;
+        }
+      }, false)
+    );
+  }
 
-    ngOnInit() {
-      this.store.dispatch(AuthActions.init());
-
-      this.router.events.subscribe(event  => {
-        this.loading = event instanceof NavigationStart;
-      });
-    }
-
-    logout() {
-      this.store.dispatch(AuthActions.logout());
-    }
-
+  logout() {
+    this.store.dispatch(AuthActions.logout());
+  }
 }

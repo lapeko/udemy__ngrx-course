@@ -1,6 +1,5 @@
 import { MatDialogConfig } from '@angular/material/dialog';
 
-
 export function defaultDialogConfig() {
   const dialogConfig = new MatDialogConfig();
 

@@ -7,29 +7,16 @@ import {MatListModule} from '@angular/material/list';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {HttpClientModule} from '@angular/common/http';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {RouterModule, Routes} from '@angular/router';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {EntityDataModule} from "@ngrx/data";
+import {routerReducer, StoreRouterConnectingModule} from "@ngrx/router-store";
 import {EffectsModule} from "@ngrx/effects";
-import {StoreRouterConnectingModule} from "@ngrx/router-store";
 
-import {AuthModule} from './auth/auth.module';
 import {AppComponent} from './app.component';
-import {metaReducers, reducers} from "./reducers";
-import {authGuard} from "./auth/auth.guard";
-
-const routes: Routes = [
-  {
-    path: 'courses',
-    canActivate: [authGuard],
-    loadChildren: () => import('./courses/courses.module').then(m => m.CoursesModule)
-  },
-  {
-    path: '**',
-    redirectTo: '/'
-  }
-];
+import {AuthModule} from './auth/auth.module';
+import {AppRoutingModule} from "./app-routing.module";
 
 @NgModule({
   declarations: [
@@ -38,26 +25,21 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    RouterModule.forRoot(routes),
     HttpClientModule,
+    AuthModule.forRoot(),
+    AppRoutingModule,
     MatMenuModule,
     MatIconModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
     MatListModule,
     MatToolbarModule,
-    AuthModule.forRoot(),
-    StoreModule.forRoot(reducers, {
-      metaReducers,
-      runtimeChecks: {
-        strictActionImmutability: true,
-        strictStateImmutability: true,
-        // strictActionSerializability: true,
-        // strictStateSerializability: true,
-      }
+    StoreModule.forRoot({
+      router: routerReducer,
     }),
+    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()}),
     EffectsModule.forRoot(),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+    EntityDataModule.forRoot({}),
     StoreRouterConnectingModule.forRoot(),
   ],
   bootstrap: [AppComponent]

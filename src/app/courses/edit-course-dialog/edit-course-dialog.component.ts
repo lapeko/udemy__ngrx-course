@@ -1,13 +1,10 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Update} from "@ngrx/entity";
 import {Observable} from 'rxjs';
-import {Store} from "@ngrx/store";
 
 import {Course} from '../model/course';
-import {AppState} from "../../reducers";
-import {CoursesActions} from "../action-types";
+import {CoursesService} from "../store/courses.service";
 
 @Component({
   selector: 'course-dialog',
@@ -15,19 +12,19 @@ import {CoursesActions} from "../action-types";
   styleUrls: ['./edit-course-dialog.component.css']
 })
 export class EditCourseDialogComponent {
-
   form: FormGroup;
   dialogTitle: string;
   course: Course;
   mode: 'create' | 'update';
-  loading$:Observable<boolean>;
+  loading$: Observable<boolean>;
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) data,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<EditCourseDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) data,
-    private store: Store<AppState>,
+    private coursesService: CoursesService,
   ) {
+
     this.dialogTitle = data.dialogTitle;
     this.course = data.course;
     this.mode = data.mode;
@@ -42,8 +39,7 @@ export class EditCourseDialogComponent {
     if (this.mode == 'update') {
       this.form = this.fb.group(formControls);
       this.form.patchValue({...data.course});
-    }
-    else if (this.mode == 'create') {
+    } else if (this.mode == 'create') {
       this.form = this.fb.group({
         ...formControls,
         url: ['', Validators.required],
@@ -57,12 +53,15 @@ export class EditCourseDialogComponent {
   }
 
   onSave() {
-    const update: Update<Course> = {
-      id: this.course.id,
-      changes: this.form.value,
+    const course: Course = {
+      ...this.course,
+      ...this.form.value,
     };
 
-    this.store.dispatch(CoursesActions.courseUpdated({update}));
+    this.mode === "create"
+      ? this.coursesService.add(course)
+      : this.coursesService.update(course);
+
     this.dialogRef.close();
   }
 }

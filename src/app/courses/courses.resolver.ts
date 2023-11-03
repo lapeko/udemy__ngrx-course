@@ -1,23 +1,17 @@
-import {ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot} from "@angular/router";
-import {Store} from "@ngrx/store";
+import {ResolveFn} from "@angular/router";
 import {inject} from "@angular/core";
 import {filter, first, tap} from "rxjs/operators";
 
-import {CoursesActions} from "./action-types";
-import {coursesLoaded} from "./courses.selectors";
+import {CoursesService} from "./store/courses.service";
 
-export const heroResolver: ResolveFn<any> = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
-  const store = inject(Store);
-  let loadCalled = false;
+export const coursesResolver: ResolveFn<boolean> = () => {
+  const coursesService = inject(CoursesService);
 
-  return store.select(coursesLoaded).pipe(
-    tap(() => {
-      if (!loadCalled) {
-        loadCalled = true;
-        store.dispatch(CoursesActions.loadAllCourses());
-      }
+  return coursesService.loaded$.pipe(
+    tap(loaded => {
+      if (!loaded) coursesService.getAll();
     }),
-    filter(loaded => loaded),
+    filter(loaded => !!loaded),
     first(),
   );
-};
+}
