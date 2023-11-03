@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
+import {map, withLatestFrom} from 'rxjs/operators';
 
 import {Course} from '../model/course';
 import {Lesson} from '../model/lesson';
 import {CoursesService} from "../store/courses.service";
+import {LessonsService} from "../store/lessons.service";
 
 @Component({
   selector: 'course',
@@ -21,6 +22,7 @@ export class CourseComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private coursesService: CoursesService,
+    private lessonsService: LessonsService,
   ) {
   }
 
@@ -29,11 +31,21 @@ export class CourseComponent implements OnInit {
     this.course$ = this.coursesService.entities$.pipe(
       map(courses => courses.find(({url}) => courseUrl === url)),
     );
-    // this.lessons$ = this.course$.pipe(
-    //   switchMap(course => this.coursesService.findLessons(course.id)),
-    // );
+    this.lessons$ = this.lessonsService.entities$.pipe(
+      withLatestFrom(this.course$),
+      map(([lessons, course]) => {
+          if (!this.nextPage) this.loadLessonsPage(course);
+          return lessons;
+      }),
+    );
   }
 
   loadLessonsPage(course: Course) {
+    this.lessonsService.getWithQuery({
+      courseId: course.id,
+      sortOrder: "asc",
+      pageNumber: this.nextPage++,
+      pageSize: 3,
+    });
   }
 }

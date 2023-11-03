@@ -6,4 +6,4 @@ export interface Lesson {
   courseId: number;
 }
 
-export const compareLessons = (l1: Lesson, l2: Lesson) => l1.courseId - l2.courseId > 1 ? 1 : -1;
+export const compareLessons = (l1: Lesson, l2: Lesson) => l1.courseId - l2.courseId > 1 ? -1 : 1;

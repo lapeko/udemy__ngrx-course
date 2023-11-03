@@ -25,6 +25,7 @@ import {CoursesRoutingModule} from "./courses-routing.module";
 import {coursesEntityMetadataMap} from "./store/course-metadata";
 import {CoursesService} from "./store/courses.service";
 import {CoursesDataService} from "./store/courses-data.service";
+import {LessonsService} from "./store/lessons.service";
 
 @NgModule({
   imports: [
@@ -60,6 +61,7 @@ import {CoursesDataService} from "./store/courses-data.service";
   ],
   providers: [
     CoursesService,
+    LessonsService,
     CoursesDataService,
   ]
 })
