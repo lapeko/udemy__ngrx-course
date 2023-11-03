@@ -55,15 +55,13 @@ export class EditCourseDialogComponent {
   onSave() {
     const course: Course = {
       ...this.course,
-      ...this.form.value
+      ...this.form.value,
     };
 
-    this.coursesService.update(course);
-    this.dialogRef.close();
+    this.mode === "create"
+      ? this.coursesService.add(course)
+      : this.coursesService.update(course);
 
-    // this.coursesService.saveCourse(course.id, course)
-    //   .subscribe(
-    //     () => this.dialogRef.close()
-    //   )
+    this.dialogRef.close();
   }
 }

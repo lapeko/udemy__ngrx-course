@@ -6,6 +6,9 @@ import {compareLessons} from "../model/lesson";
 export const coursesEntityMetadataMap: EntityMetadataMap = {
   Course: {
     sortComparer: compareCourses,
+    entityDispatcherOptions: {
+      optimisticUpdate: true,
+    }
   },
   Lesson: {
     sortComparer: compareLessons,
