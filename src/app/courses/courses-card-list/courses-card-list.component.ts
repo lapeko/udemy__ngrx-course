@@ -12,7 +12,6 @@ import {defaultDialogConfig} from '../shared/default-dialog-config';
 })
 export class CoursesCardListComponent {
   @Input() courses: Course[];
-  @Output() courseChanged = new EventEmitter();
 
   constructor(
     private dialog: MatDialog
@@ -30,7 +29,7 @@ export class CoursesCardListComponent {
 
     this.dialog.open(EditCourseDialogComponent, dialogConfig)
       .afterClosed()
-      .subscribe(() => this.courseChanged.emit());
+      .subscribe();
   }
 
   onDeleteCourse(course: Course) {

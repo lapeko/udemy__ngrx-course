@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
-import {concatMap, tap} from 'rxjs/operators';
+import {concatMap} from 'rxjs/operators';
 
 import {Course} from '../model/course';
 import {Lesson} from '../model/lesson';
@@ -29,7 +29,6 @@ export class CourseComponent implements OnInit {
     this.course$ = this.coursesService.findCourseByUrl(courseUrl);
     this.lessons$ = this.course$.pipe(
       concatMap(course => this.coursesService.findLessons(course.id)),
-      tap(console.log)
     );
   }
 

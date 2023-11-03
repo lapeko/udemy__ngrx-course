@@ -7,15 +7,16 @@ import {MatListModule} from '@angular/material/list';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {HttpClientModule} from '@angular/common/http';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {EntityDataModule} from "@ngrx/data";
+import {routerReducer, StoreRouterConnectingModule} from "@ngrx/router-store";
+import {EffectsModule} from "@ngrx/effects";
 
 import {AppComponent} from './app.component';
 import {AuthModule} from './auth/auth.module';
-import {EffectsModule} from "@ngrx/effects";
 import {AppRoutingModule} from "./app-routing.module";
-import {EntityDataModule} from "@ngrx/data";
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import {EntityDataModule} from "@ngrx/data";
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    AuthModule.forRoot(),
     AppRoutingModule,
     MatMenuModule,
     MatIconModule,
@@ -32,11 +34,13 @@ import {EntityDataModule} from "@ngrx/data";
     MatProgressSpinnerModule,
     MatListModule,
     MatToolbarModule,
-    AuthModule.forRoot(),
-    StoreModule.forRoot({}),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+    StoreModule.forRoot({
+      router: routerReducer,
+    }),
+    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()}),
     EffectsModule.forRoot(),
     EntityDataModule.forRoot({}),
+    StoreRouterConnectingModule.forRoot(),
   ],
   bootstrap: [AppComponent]
 })
