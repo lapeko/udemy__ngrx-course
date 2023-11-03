@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 
 import {EditCourseDialogComponent} from "../edit-course-dialog/edit-course-dialog.component";
@@ -9,7 +9,8 @@ import {CoursesService} from "../store/courses.service";
 @Component({
   selector: 'courses-card-list',
   templateUrl: './courses-card-list.component.html',
-  styleUrls: ['./courses-card-list.component.css']
+  styleUrls: ['./courses-card-list.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoursesCardListComponent {
   @Input() courses: Course[];
