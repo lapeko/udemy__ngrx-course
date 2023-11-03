@@ -20,7 +20,6 @@ import {EntityDataService, EntityDefinitionService} from "@ngrx/data";
 import {HomeComponent} from './home/home.component';
 import {CoursesCardListComponent} from './courses-card-list/courses-card-list.component';
 import {EditCourseDialogComponent} from './edit-course-dialog/edit-course-dialog.component';
-import {CoursesHttpService} from './services/courses-http.service';
 import {CourseComponent} from './course/course.component';
 import {CoursesRoutingModule} from "./courses-routing.module";
 import {coursesEntityMetadataMap} from "./store/course-metadata";
@@ -60,7 +59,6 @@ import {CoursesDataService} from "./store/courses-data.service";
     CourseComponent,
   ],
   providers: [
-    CoursesHttpService,
     CoursesService,
     CoursesDataService,
   ]

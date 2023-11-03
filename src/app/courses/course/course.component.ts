@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
-import {concatMap} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 
 import {Course} from '../model/course';
 import {Lesson} from '../model/lesson';
-import {CoursesHttpService} from '../services/courses-http.service';
+import {CoursesService} from "../store/courses.service";
 
 @Component({
   selector: 'course',
@@ -19,17 +19,19 @@ export class CourseComponent implements OnInit {
   displayedColumns = ['seqNo', 'description', 'duration'];
 
   constructor(
-    private coursesService: CoursesHttpService,
     private route: ActivatedRoute,
+    private coursesService: CoursesService,
   ) {
   }
 
   ngOnInit() {
     const courseUrl = this.route.snapshot.paramMap.get("courseUrl");
-    this.course$ = this.coursesService.findCourseByUrl(courseUrl);
-    this.lessons$ = this.course$.pipe(
-      concatMap(course => this.coursesService.findLessons(course.id)),
+    this.course$ = this.coursesService.entities$.pipe(
+      map(courses => courses.find(({url}) => courseUrl === url)),
     );
+    // this.lessons$ = this.course$.pipe(
+    //   switchMap(course => this.coursesService.findLessons(course.id)),
+    // );
   }
 
   loadLessonsPage(course: Course) {
